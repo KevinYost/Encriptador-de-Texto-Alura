@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="styles.css">
+
+    <title>Encriptador de texto (RETO ALURA).</title>
+</head>
+<body>
+    <header>
+        <img src="componentes/logo.png" alt="Logo de alura" class="logo">
+    </header>
+    
+    <main>
+
+        <section class="sec1">
+            <textarea id="entradaTexto" placeholder="Ingrese el texto aqui" required></textarea>
+        </section>
+
+        <section class="sec2">
+            <div class="caja1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
+                <p class="parrafoCaja1">Solo letras minusculas y sin acentos.</p>
+            </div>
+            <div class="caja2">
+                <input type="submit" value="Encriptar" id="bEncriptar">
+                <input type="submit" value="Desencriptar" id="bDesencriptar">
+            </div>
+
+        </section>
+
+        <section class="sec3">
+            <div id="rectangulo1">
+                <img src="componentes/Muñeco.png" alt="Muneco" class="muneco">
+                <p id="cResultado"></p>
+
+                <div class="cajaNoEncontrado">
+                    <p class="parrafo1Rec1">Ningún mensaje fue encontrado</p>
+                    <p class="parrafo2Rec1">Ingresa el texto que desees encriptar o desencriptar.</p>
+                </div>
+                <input type="submit" value="Copiar" id="bCopiar">
+            </div>
+
+        </section>
+        
+    </main>
+
+    <footer>
+        <p>Kevin Augusto Ramon Yost</p>
+    </footer>
+
+    <script>
+        var mensaje = document.getElementById('entradaTexto');
+        var botEncriptar = document.getElementById('bEncriptar');
+        var botDesencriptar = document.getElementById('bDesencriptar');
+        var mostrarMensaje = document.getElementById('cResultado');
+        var botonCopiar = document.getElementById('bCopiar');
+
+
+        var mEncriptado = ' ';
+
+        function verificar(){
+
+            mEncriptado = mensaje.value;
+            var tVerificado = '';
+            var filtro = 'qwertyuiopasdfghjklzxcvbnm ';
+
+            if (mEncriptado.length != 0){
+                for (var i = 0;i < mEncriptado.length ; i++){
+                    for(var x = 0; x < filtro.length ; x++){
+                        if(mEncriptado[i] == filtro[x]){
+                            tVerificado = tVerificado + mEncriptado[i];
+                        }
+                    }    
+                }
+            return tVerificado;
+            }
+            else{
+                alert('Por favor ingrese algo para traducir.')
+                modRectangulo1('block','none')
+            }
+        }
+
+
+        function encriptar(){
+
+            mostrarMensaje.innerHTML = '';
+            mEncriptado = mensaje.value;
+
+            var encriptado = '';
+
+
+
+            var regex = /e/gm;
+            var regex2 = /i/gm;
+            var regex3 = /a/gm;
+            var regex4 = /o/gm;
+            var regex5 = /u/gm;
+
+            var tVerificado = verificar();
+
+            if(tVerificado.length == mEncriptado.length){
+                modRectangulo1('none','block');
+                var tSinE = mEncriptado.replace(regex,'enter');
+                var tSinI = tSinE.replace(regex2,'imes');    
+                var tSinA = tSinI.replace(regex3,'ai');
+                var tSinO = tSinA.replace(regex4,'ober');
+                var encriptado = tSinO.replace(regex5,'ufat');   
+
+                mostrarMensaje.append(encriptado);
+            }          
+            else{
+                alert('Verifique el mensaje ingresado, NO se permiten asentos ni letras en MAYUSCULAS.')
+                modRectangulo1('block','none')
+            }
+
+        }
+
+
+        function desencriptar(){
+            mostrarMensaje.innerHTML = '';
+
+            mEncriptado = mensaje.value;
+            console.log(mEncriptado.length);
+            var desencriptado = ''
+
+            var regex = /enter/gm;
+            var regex2 = /imes/gm;
+            var regex3 = /ai/gm;
+            var regex4 = /ober/gm;
+            var regex5 = /ufat/gm;
+
+            var tVerificado = verificar();
+
+            if(tVerificado.length == mEncriptado.length){
+                modRectangulo1('none','block');
+
+                var tSinEnter = mEncriptado.replace(regex,'e');
+                var tSinImes = tSinEnter.replace(regex2,'i');    
+                var tSinAi = tSinImes.replace(regex3,'a');
+                var tSinOber = tSinAi.replace(regex4,'o');
+                var desencriptado = tSinOber.replace(regex5,'u');        
+
+                mostrarMensaje.append(desencriptado);
+            }
+            else{
+                alert('Verifique el mensaje ingresado, NO se permiten asentos ni letras en MAYUSCULAS.')
+                modRectangulo1('block','none')
+            }
+        }
+
+
+        function copiar(){
+            var seleccionar = document.createRange();
+            seleccionar.selectNodeContents(mostrarMensaje);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(seleccionar);
+            var result = document.execCommand('copy');
+            window.getSelection().removeRange(seleccionar);
+        }
+
+        function modRectangulo1(x,y){
+
+            //Desaparecer items del rectangulo
+            var ocultar1 = document.getElementsByClassName('muneco');
+            var ocultar2 = document.getElementsByClassName('cajaNoEncontrado');
+            
+            ocultar1[0].style.display = x;
+            ocultar2[0].style.display = x;
+
+            //Aparecer elemntos del rectangulo
+            botonCopiar.style.display = y
+            mostrarMensaje.style.display = y;
+
+        }
+        botEncriptar.onclick = encriptar;
+        botDesencriptar.onclick = desencriptar;
+        botonCopiar.onclick = copiar;
+
+
+    </script>
+</body>
+</html>
