@@ -326,7 +326,7 @@ footer{
 @media screen and (max-width:480px){
     #entradaTexto{
         width: 100%;
-        height: 540px;
+        height: 180px;
     }
     .sec2{
         height: auto;
